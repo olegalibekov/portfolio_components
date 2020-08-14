@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CounterApp extends StatefulWidget {
+class AppSample extends StatefulWidget {
   @override
-  _CounterAppState createState() => _CounterAppState();
+  _AppSampleState createState() => _AppSampleState();
 }
 
-class _CounterAppState extends State<CounterApp> {
+class _AppSampleState extends State<AppSample> {
   int _counter = 0;
 
   void _incrementCounter() {
