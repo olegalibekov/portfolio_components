@@ -102,6 +102,7 @@ class _LightPageState extends State<LightPage> with TickerProviderStateMixin {
     Tween _opacityThirdLightRange = Tween(begin: 0.0, end: 1.0);
     Tween _widthInPercentsThirdLightRange = Tween(begin: 0.0, end: 1.0);
 
+
     _thirdLightController =
         AnimationController(vsync: this, duration: Duration(seconds: 3));
     Animation _thirdCurve = CurvedAnimation(
@@ -110,6 +111,8 @@ class _LightPageState extends State<LightPage> with TickerProviderStateMixin {
     _yThirdLightAnimationTween = _thirdYLightRange.animate(_thirdCurve);
     _opacityThirdLightAnimationTween =
         _opacityThirdLightRange.animate(_thirdLightController);
+
+
 //    _widthInPercentsThirdLightAnimationTween =
 //        _widthInPercentsThirdLightRange.animate(_thirdLightController);
 
