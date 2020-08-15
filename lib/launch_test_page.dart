@@ -8,9 +8,8 @@ class LaunchTestPage extends StatefulWidget {
 }
 
 class _LaunchTestPageState extends State<LaunchTestPage> {
-  VideoPlayerController _videoController;
-
   List<StoryWidgetComponent> _storyComponents;
+  VideoPlayerController _videoController;
 
   @override
   void initState() {
@@ -19,9 +18,9 @@ class _LaunchTestPageState extends State<LaunchTestPage> {
     _videoController.initialize().then((_) => setState(() {}));
     _storyComponents = [
       StoryWidgetComponent(
-          4000, Image.asset('assets/images/1.jpg', fit: BoxFit.cover)),
+          1000, Image.asset('assets/images/1.jpg', fit: BoxFit.cover)),
       StoryWidgetComponent(
-          6000, Image.asset('assets/images/4.jpg', fit: BoxFit.cover)),
+          1000, Image.asset('assets/images/4.jpg', fit: BoxFit.cover)),
       StoryWidgetComponent(
           15000,
           RotatedBox(quarterTurns: 1, child: VideoPlayer(_videoController)),

@@ -41,27 +41,41 @@ class _StoryWidgetState extends State<StoryWidget>
   @override
   void initState() {
     startTimer();
+
     widget.storyComponents
         .forEach((element) => _storyComponentsIndicatorValues.add(0));
     _pageController = PageController(initialPage: _currentPage.value);
     _currentPage.addListener(() {
       for (int i = 0; i < _currentPage.value; i++)
-        setState(() => _storyComponentsIndicatorValues[i] = 1);
+        _storyComponentsIndicatorValues[i] = 1;
       for (int i = _storyComponentsIndicatorValues.length - 1;
           i > _currentPage.value - 1;
-          i--) setState(() => _storyComponentsIndicatorValues[i] = 0);
+          i--) _storyComponentsIndicatorValues[i] = 0;
       _pageController.animateToPage(_currentPage.value,
           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
       if (widget.storyComponents[_currentPage.value].videoPlayerController !=
           null) {
+        print(true);
         widget.storyComponents[_currentPage.value].videoPlayerController
-            .seekTo(Duration(seconds: 0));
+            .seekTo(Duration(milliseconds: 0));
         widget.storyComponents[_currentPage.value].videoPlayerController.play();
       }
       startTimer();
+      setState(() {});
     });
 
     super.initState();
+  }
+
+  checkIfVideo() async {
+    if (widget.storyComponents[_currentPage.value].videoPlayerController !=
+        null) {
+      print(true);
+      await widget.storyComponents[_currentPage.value].videoPlayerController
+          .seekTo(Duration(milliseconds: 0));
+      await widget.storyComponents[_currentPage.value].videoPlayerController
+          .play();
+    }
   }
 
   @override
