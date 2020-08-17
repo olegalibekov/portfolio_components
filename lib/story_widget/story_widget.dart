@@ -27,10 +27,9 @@ class _StoryWidgetState extends State<StoryWidget>
   List<double> _storyComponentsIndicatorValues = [];
   AnimationController _timerController;
   PageController _pageController;
-  Size _widgetSize = Size(450, 800);
 
-  CountdownTimer _countdownTimer;
-  Animation _timerAnimationTween;
+//  Size _widgetSize = Size(450, 800);
+  Size _widgetSize;
 
   @override
   void dispose() {
@@ -45,64 +44,64 @@ class _StoryWidgetState extends State<StoryWidget>
     widget.storyComponents
         .forEach((element) => _storyComponentsIndicatorValues.add(0));
     _pageController = PageController(initialPage: _currentPage.value);
+
+    pageChangeListener();
+    super.initState();
+  }
+
+  pageChangeListener() {
     _currentPage.addListener(() {
-      for (int i = 0; i < _currentPage.value; i++)
+      for (int i = 0; i < _currentPage.value; i++) {
         _storyComponentsIndicatorValues[i] = 1;
+      }
       for (int i = _storyComponentsIndicatorValues.length - 1;
           i > _currentPage.value - 1;
-          i--) _storyComponentsIndicatorValues[i] = 0;
+          i--) {
+        _storyComponentsIndicatorValues[i] = 0;
+      }
       _pageController.animateToPage(_currentPage.value,
           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
       if (widget.storyComponents[_currentPage.value].videoPlayerController !=
           null) {
-        print(true);
         widget.storyComponents[_currentPage.value].videoPlayerController
             .seekTo(Duration(milliseconds: 0));
         widget.storyComponents[_currentPage.value].videoPlayerController.play();
       }
+
       startTimer();
       setState(() {});
     });
-
-    super.initState();
-  }
-
-  checkIfVideo() async {
-    if (widget.storyComponents[_currentPage.value].videoPlayerController !=
-        null) {
-      print(true);
-      await widget.storyComponents[_currentPage.value].videoPlayerController
-          .seekTo(Duration(milliseconds: 0));
-      await widget.storyComponents[_currentPage.value].videoPlayerController
-          .play();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-      ConstrainedBox(
-          constraints: BoxConstraints(
-              maxWidth: _widgetSize.width, maxHeight: _widgetSize.height),
-          child: GestureDetector(
-              onTapDown: (details) {
-                double x = details.localPosition.dx;
-                if (x < _widgetSize.width / 2 && _currentPage.value != 0) {
-                  _currentPage.value -= 1;
-                } else if (x > _widgetSize.width / 2 &&
-                    _currentPage.value != widget.storyComponents.length - 1) {
-                  _currentPage.value += 1;
-                }
-              },
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Stack(children: [
-                    pageViewSection(),
-                    storyIndicatorSection()
-                  ])))),
-      SizedBox(height: 36)
-    ]));
+    _widgetSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Center(
+          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        ConstrainedBox(
+            constraints: BoxConstraints(
+                maxWidth: _widgetSize.width, maxHeight: _widgetSize.height),
+            child: GestureDetector(
+                onTapDown: (details) {
+                  double x = details.localPosition.dx;
+                  if (x < _widgetSize.width / 2 && _currentPage.value != 0) {
+                    _currentPage.value -= 1;
+                  } else if (x > _widgetSize.width / 2 &&
+                      _currentPage.value != widget.storyComponents.length - 1) {
+                    _currentPage.value += 1;
+                  }
+                },
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(0),
+                    child: Stack(children: [
+                      pageViewSection(),
+                      storyIndicatorSection()
+                    ]))))
+//        SizedBox(height: 36)
+      ])),
+    );
   }
 
   startTimer() {
@@ -122,27 +121,10 @@ class _StoryWidgetState extends State<StoryWidget>
     _timerController.forward();
   }
 
-//    _countdownTimer =
-//        CountdownTimer(Duration(milliseconds: 3000), Duration(milliseconds: 5));
-//    _countdownTimer.listen((data) {
-//      int milliSeconds = data.elapsed.inMilliseconds;
-//      setState(() {
-//        _storyComponentsIndicatorValues[_currentPage.value] =
-//            milliSeconds / 3000;
-//      });
-//    });
-//    ..onDone(() {
-//    if (_currentPage.value != widget.storyComponents.length - 1) {
-//    _currentPage.value += 1;
-//    }
-//    });
-//  }
-
   Widget pageViewSection() {
     return PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
-        scrollDirection: Axis.horizontal,
         children: [
           for (dynamic storyComponent in widget.storyComponents)
             storyComponent.storyWidget
@@ -151,7 +133,7 @@ class _StoryWidgetState extends State<StoryWidget>
 
   Widget storyIndicatorSection() {
     return Padding(
-        padding: const EdgeInsets.only(top: 8.0, left: 6.0, right: 6.0),
+        padding: const EdgeInsets.only(top: 36.0, left: 6.0, right: 6.0),
         child: Row(children: [
           for (int storyComponentIndex = 0;
               storyComponentIndex < widget.storyComponents.length;
@@ -193,3 +175,19 @@ class _LinearProgressState extends State<LinearProgress> {
         minHeight: 2);
   }
 }
+
+//    _countdownTimer =
+//        CountdownTimer(Duration(milliseconds: 3000), Duration(milliseconds: 5));
+//    _countdownTimer.listen((data) {
+//      int milliSeconds = data.elapsed.inMilliseconds;
+//      setState(() {
+//        _storyComponentsIndicatorValues[_currentPage.value] =
+//            milliSeconds / 3000;
+//      });
+//    });
+//    ..onDone(() {
+//    if (_currentPage.value != widget.storyComponents.length - 1) {
+//    _currentPage.value += 1;
+//    }
+//    });
+//  }

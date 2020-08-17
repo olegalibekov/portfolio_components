@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'widgets/story_widget.dart';
+import 'story_widget.dart';
 
 class LaunchTestPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _LaunchTestPageState extends State<LaunchTestPage> {
   void initState() {
     super.initState();
     _videoController = VideoPlayerController.asset('assets/video/nebula.mp4');
-    _videoController.initialize().then((_) => setState(() {}));
+    _videoController.initialize();
     _storyComponents = [
       StoryWidgetComponent(
           1000, Image.asset('assets/images/1.jpg', fit: BoxFit.cover)),
@@ -30,11 +30,11 @@ class _LaunchTestPageState extends State<LaunchTestPage> {
     ];
   }
 
-  @override
-  void dispose() {
-    _videoController.dispose();
-    super.dispose();
-  }
+//  @override
+//  void dispose() {
+//    _videoController.dispose();
+//    super.dispose();
+//  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio_components/launch_test_page.dart';
+import 'menu/menu_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,109 +13,172 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity),
-        home: LaunchTestPage());
+        home: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (scroll) {
+              scroll.disallowGlow();
+              return false;
+            },
+            child: MenuPage()));
   }
 }
 
-//import 'dart:async';
+// Copyright 2019 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 //
 //import 'package:flutter/material.dart';
-//import 'package:video_player/video_player.dart';
+//import 'package:flutter/scheduler.dart';
 //
-//void main() => runApp(VideoPlayerApp());
+//import 'container_transition.dart';
 //
-//class VideoPlayerApp extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return MaterialApp(
-//      title: 'Video Player Demo',
-//      home: VideoPlayerScreen(),
-//    );
-//  }
+//
+//void main() {
+//  runApp(
+//    MaterialApp(
+//      theme: ThemeData.from(
+//        colorScheme: const ColorScheme.light(),
+//      ).copyWith(
+//        pageTransitionsTheme: const PageTransitionsTheme(
+//          builders: <TargetPlatform, PageTransitionsBuilder>{
+//            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+//          },
+//        ),
+//      ),
+//      home: _TransitionsHomePage(),
+//    ),
+//  );
 //}
 //
-//class VideoPlayerScreen extends StatefulWidget {
-//  VideoPlayerScreen({Key key}) : super(key: key);
-//
+//class _TransitionsHomePage extends StatefulWidget {
 //  @override
-//  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+//  _TransitionsHomePageState createState() => _TransitionsHomePageState();
 //}
 //
-//class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-//  VideoPlayerController _controller;
-//  Future<void> _initializeVideoPlayerFuture;
-//
-//  @override
-//  void initState() {
-//    // Create and store the VideoPlayerController. The VideoPlayerController
-//    // offers several different constructors to play videos from assets, files,
-//    // or the internet.
-//    _controller = VideoPlayerController.network(
-//      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-//    );
-//
-//    // Initialize the controller and store the Future for later use.
-//    _initializeVideoPlayerFuture = _controller.initialize();
-//
-//    // Use the controller to loop the video.
-//    _controller.setLooping(true);
-//
-//    super.initState();
-//  }
-//
-//  @override
-//  void dispose() {
-//    // Ensure disposing of the VideoPlayerController to free up resources.
-//    _controller.dispose();
-//
-//    super.dispose();
-//  }
+//class _TransitionsHomePageState extends State<_TransitionsHomePage> {
+//  bool _slowAnimations = false;
 //
 //  @override
 //  Widget build(BuildContext context) {
 //    return Scaffold(
-//      appBar: AppBar(
-//        title: Text('Butterfly Video'),
+//      appBar: AppBar(title: const Text('Material Transitions')),
+//      body: Column(
+//        children: <Widget>[
+//          Expanded(
+//            child: ListView(
+//              children: <Widget>[
+//                _TransitionListTile(
+//                  title: 'Container transform',
+//                  subtitle: 'OpenContainer',
+//                  onTap: () {
+//                    Navigator.of(context).push(
+//                      MaterialPageRoute<void>(
+//                        builder: (BuildContext context) {
+//                          return OpenContainerTransformDemo();
+//                        },
+//                      ),
+//                    );
+//                  },
+//                ),
+////                _TransitionListTile(
+////                  title: 'Shared axis',
+////                  subtitle: 'SharedAxisTransition',
+////                  onTap: () {
+////                    Navigator.of(context).push(
+////                      MaterialPageRoute<void>(
+////                        builder: (BuildContext context) {
+////                          return SharedAxisTransitionDemo();
+////                        },
+////                      ),
+////                    );
+////                  },
+////                ),
+////                _TransitionListTile(
+////                  title: 'Fade through',
+////                  subtitle: 'FadeThroughTransition',
+////                  onTap: () {
+////                    Navigator.of(context).push(
+////                      MaterialPageRoute<void>(
+////                        builder: (BuildContext context) {
+////                          return FadeThroughTransitionDemo();
+////                        },
+////                      ),
+////                    );
+////                  },
+////                ),
+////                _TransitionListTile(
+////                  title: 'Fade',
+////                  subtitle: 'FadeScaleTransition',
+////                  onTap: () {
+////                    Navigator.of(context).push(
+////                      MaterialPageRoute<void>(
+////                        builder: (BuildContext context) {
+////                          return FadeScaleTransitionDemo();
+////                        },
+////                      ),
+////                    );
+////                  },
+////                ),
+//              ],
+//            ),
+//          ),
+//          const Divider(height: 0.0),
+//          SafeArea(
+//            child: SwitchListTile(
+//              value: _slowAnimations,
+//              onChanged: (bool value) async {
+//                setState(() {
+//                  _slowAnimations = value;
+//                });
+//                // Wait until the Switch is done animating before actually slowing
+//                // down time.
+//                if (_slowAnimations) {
+//                  await Future<void>.delayed(const Duration(milliseconds: 300));
+//                }
+//                timeDilation = _slowAnimations ? 20.0 : 1.0;
+//              },
+//              title: const Text('Slow animations'),
+//            ),
+//          ),
+//        ],
 //      ),
-//      // Use a FutureBuilder to display a loading spinner while waiting for the
-//      // VideoPlayerController to finish initializing.
-//      body: FutureBuilder(
-//        future: _initializeVideoPlayerFuture,
-//        builder: (context, snapshot) {
-//          if (snapshot.connectionState == ConnectionState.done) {
-//            // If the VideoPlayerController has finished initialization, use
-//            // the data it provides to limit the aspect ratio of the video.
-//            return AspectRatio(
-//              aspectRatio: _controller.value.aspectRatio,
-//              // Use the VideoPlayer widget to display the video.
-//              child: VideoPlayer(_controller),
-//            );
-//          } else {
-//            // If the VideoPlayerController is still initializing, show a
-//            // loading spinner.
-//            return Center(child: CircularProgressIndicator());
-//          }
-//        },
+//    );
+//  }
+//}
+//
+//class _TransitionListTile extends StatelessWidget {
+//  const _TransitionListTile({
+//    this.onTap,
+//    this.title,
+//    this.subtitle,
+//  });
+//
+//  final GestureTapCallback onTap;
+//  final String title;
+//  final String subtitle;
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return ListTile(
+//      contentPadding: const EdgeInsets.symmetric(
+//        horizontal: 15.0,
 //      ),
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: () {
-//          // Wrap the play or pause in a call to `setState`. This ensures the
-//          // correct icon is shown.
-//          setState(() {
-//            // If the video is playing, pause it.
-//            if (_controller.value.isPlaying) {
-//              _controller.pause();
-//            } else {
-//              // If the video is paused, play it.
-//              _controller.play();
-//            }
-//          });
-//        },
-//        // Display the correct icon depending on the state of the player.
-//        child: Icon(
-//          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+//      leading: Container(
+//        width: 40.0,
+//        height: 40.0,
+//        decoration: BoxDecoration(
+//          borderRadius: BorderRadius.circular(20.0),
+//          border: Border.all(
+//            color: Colors.black54,
+//          ),
 //        ),
-//      ), // This trailing comma makes auto-formatting nicer for build methods.
+//        child: const Icon(
+//          Icons.play_arrow,
+//          size: 35,
+//        ),
+//      ),
+//      onTap: onTap,
+//      title: Text(title),
+//      subtitle: Text(subtitle),
 //    );
 //  }
 //}
