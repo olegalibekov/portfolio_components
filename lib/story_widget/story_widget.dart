@@ -78,30 +78,27 @@ class _StoryWidgetState extends State<StoryWidget>
   Widget build(BuildContext context) {
     _widgetSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        ConstrainedBox(
-            constraints: BoxConstraints(
-                maxWidth: _widgetSize.width, maxHeight: _widgetSize.height),
-            child: GestureDetector(
-                onTapDown: (details) {
-                  double x = details.localPosition.dx;
-                  if (x < _widgetSize.width / 2 && _currentPage.value != 0) {
-                    _currentPage.value -= 1;
-                  } else if (x > _widgetSize.width / 2 &&
-                      _currentPage.value != widget.storyComponents.length - 1) {
-                    _currentPage.value += 1;
-                  }
-                },
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(0),
-                    child: Stack(children: [
-                      pageViewSection(),
-                      storyIndicatorSection()
-                    ]))))
+        body: Center(
+            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      ConstrainedBox(
+          constraints: BoxConstraints(
+              maxWidth: _widgetSize.width, maxHeight: _widgetSize.height),
+          child: GestureDetector(
+              onTapDown: (details) {
+                double x = details.localPosition.dx;
+                if (x < _widgetSize.width / 2 && _currentPage.value != 0) {
+                  _currentPage.value -= 1;
+                } else if (x > _widgetSize.width / 2 &&
+                    _currentPage.value != widget.storyComponents.length - 1) {
+                  _currentPage.value += 1;
+                }
+              },
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(0),
+                  child: Stack(
+                      children: [pageViewSection(), storyIndicatorSection()]))))
 //        SizedBox(height: 36)
-      ])),
-    );
+    ])));
   }
 
   startTimer() {

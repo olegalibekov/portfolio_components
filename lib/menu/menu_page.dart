@@ -45,69 +45,71 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     _widgetSize = MediaQuery.of(context).size;
+    _pageController =
+        PageController(initialPage: 0, viewportFraction: _viewportFraction);
     return Scaffold(
         backgroundColor: Colors.black,
         resizeToAvoidBottomInset: false,
         floatingActionButton: floatingActionButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        body: ListView(
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            children: [
-              SizedBox(height: 36),
-              storySection(),
-              SizedBox(height: 16),
-              Container(
-                  color: Colors.white.withOpacity(0.1),
-                  child: Column(children: [
-                    SizedBox(height: 18),
-                    searchingSection(),
-                    SizedBox(height: 16),
-                    TagSection(tagList: [
-                      tagTemplate('tag'),
-                      tagTemplate('longLongTag'),
-                      tagTemplate('shortTag'),
-                      tagTemplate('tag'),
-                      tagTemplate('newTag'),
-                      tagTemplate('tag'),
-                      tagTemplate('shortTag'),
-                      tagTemplate('longLongTag')
-                    ])
-                  ])),
-              SizedBox(height: 16),
-              SizedBox(height: 1350, width: 200, child: swipeArea())
-            ]));
+        body: Center(
+          child: ListView(physics: BouncingScrollPhysics(), children: [
+            SizedBox(height: 36),
+            storySection(),
+            SizedBox(height: 16),
+            Container(
+                color: Colors.white.withOpacity(0.1),
+                child: Column(children: [
+                  SizedBox(height: 18),
+                  searchingSection(),
+                  SizedBox(height: 16),
+                  TagSection(tagList: [
+                    tagTemplate('tag'),
+                    tagTemplate('longLongTag'),
+                    tagTemplate('shortTag'),
+                    tagTemplate('tag'),
+                    tagTemplate('newTag'),
+                    tagTemplate('tag'),
+                    tagTemplate('shortTag'),
+                    tagTemplate('longLongTag')
+                  ])
+                ])),
+            SizedBox(height: 16),
+            SizedBox(height: 1350, width: 200, child: swipeArea())
+          ]),
+        ));
   }
 
   Widget floatingActionButton() {
     return Material(
-      color: Colors.transparent,
-      child: InkWell(
-          customBorder: CircleBorder(),
-          onTap: () {},
-          child: OpenContainer(
-              useRootNavigator: true,
-              openColor: Colors.transparent,
-              transitionDuration: Duration(milliseconds: 300),
-              transitionType: _transitionType,
-              openBuilder: (BuildContext context, VoidCallback _) =>
-                  LightPage(),
-              closedElevation: 6.0,
-              closedShape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_fabDimension / 2))),
-              closedColor: Colors.white.withOpacity(0.3),
-              closedBuilder:
-                  (BuildContext context, VoidCallback openContainer) =>
-                      SizedBox(
-                          height: _fabDimension,
-                          width: _fabDimension,
-                          child: Center(
-                              child: Icon(Icons.home,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondary))))),
-    );
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(_fabDimension / 2),
+        child: InkWell(
+            hoverColor: Colors.transparent,
+            customBorder: CircleBorder(),
+            onTap: () {},
+            child: OpenContainer(
+                useRootNavigator: true,
+                openColor: Colors.transparent,
+                transitionDuration: Duration(milliseconds: 300),
+                transitionType: _transitionType,
+                openBuilder: (BuildContext context, VoidCallback _) =>
+                    LightPage(),
+                closedElevation: 6.0,
+                closedShape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(_fabDimension / 2))),
+                closedColor: Colors.white.withOpacity(0.3),
+                closedBuilder:
+                    (BuildContext context, VoidCallback openContainer) =>
+                        SizedBox(
+                            height: _fabDimension,
+                            width: _fabDimension,
+                            child: Center(
+                                child: Icon(Icons.home,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary))))));
   }
 
   Widget storySection() {
@@ -193,24 +195,26 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Widget swipeArea() {
-    return PageView(
-        controller: _pageController,
-        onPageChanged: (page) {
-//              if (_pageController.page == 0)
+    return PageView(controller: _pageController,
+//            onPageChanged: (page) {
+//              if (page== 0)
 //                setState(() {
-//                  _viewportFraction = 0.5;
+//                  _viewportFraction = 0.7;
 //                });
 //              else if (page == 1)
 //                setState(() {
 //                  _viewportFraction = 1;
 //                });
-        },
+//            },
         children: [
-          Column(children: [
-            wideButton('First'),
-            wideButton('Second'),
-            wideButton('Third')
-          ]),
+          Container(
+              width: 200,
+              child: Center(
+                  child: Column(children: [
+                wideButton('First'),
+                wideButton('Second'),
+                wideButton('Third')
+              ]))),
           newsSection()
         ]);
   }
